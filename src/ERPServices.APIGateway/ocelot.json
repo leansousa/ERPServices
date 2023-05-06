@@ -1,0 +1,101 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5000"
+  },
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/gateway/cashflow",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/v1/cashflow",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.10.0.100",
+          "Port": 80
+        }
+      ]
+    },
+
+    {
+      "UpstreamPathTemplate": "/gateway/cashflow/{Id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/v1/cashflow/{Id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.10.0.100",
+          "Port": 80
+        }
+      ]
+    },
+
+    {
+      "UpstreamPathTemplate": "/gateway/cashflow",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/v1/cashflow",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.10.0.100",
+          "Port": 80
+        }
+      ]
+    },
+
+    {
+      "UpstreamPathTemplate": "/gateway/cashflow",
+      "UpstreamHttpMethod": [ "Put" ],
+      "DownstreamPathTemplate": "/api/v1/cashflow",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.10.0.100",
+          "Port": 80
+        }
+      ]
+    },
+
+    {
+      "UpstreamPathTemplate": "/gateway/cashflow/{Id}",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamPathTemplate": "/api/v1/cashflow/{Id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.10.0.100",
+          "Port": 80
+        }
+      ]
+    },
+
+
+   
+
+    {
+      "UpstreamPathTemplate": "/gateway/reportcashflow",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/v1/reportcashflow",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.10.0.102",
+          "Port": 80
+        }
+      ]
+    },
+
+    {
+      "UpstreamPathTemplate": "/gateway/reportcashflow/{beginDate}/{endDate}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/v1/reportcashflow/{beginDate}/{endDate}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.10.0.102",
+          "Port": 80
+        }
+      ]
+    }
+
+  ]
+}

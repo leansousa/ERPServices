@@ -1,0 +1,171 @@
+version: '3.4'
+
+name: erp-services
+
+services:        
+  mysql-cashflow:
+    container_name: mysql8-cashflow
+    image: mysql:8.0
+    command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cashflow
+      MYSQL_USER: cashflow_user
+      MYSQL_PASSWORD: cashflow_pass
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+    ports:
+      - '3316:3306'
+    networks:
+      rede-erp-services:
+        ipv4_address: 10.10.0.10
+    volumes:
+      - './docker/mysql-cashflow/data:/var/lib/mysql'
+      - './docker/mysql-cashflow/my.cnf:/etc/mysql/conf.d/my.cnf'
+      - './docker/mysql-cashflow/sql:/docker-entrypoint-initdb.d'
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=root --execute \"SHOW DATABASES;\""
+      interval: 10s
+      timeout: 20s
+      retries: 10
+      
+
+      
+  mysql-report:
+    container_name: mysql8-report
+    image: mysql:8.0
+    command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: report
+      MYSQL_USER: report_user
+      MYSQL_PASSWORD: report_pass
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+    ports:
+      - '3326:3306'
+    expose:
+      - 3306  
+    networks:
+      rede-erp-services:
+        ipv4_address: 10.10.0.20
+    volumes:
+      - './docker/mysql-report/data:/var/lib/mysql'
+      - './docker/mysql-report/my.cnf:/etc/mysql/conf.d/my.cnf'
+      - './docker/mysql-report/sql:/docker-entrypoint-initdb.d'
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=root --execute \"SHOW DATABASES;\""
+      interval: 10s
+      timeout: 20s
+      retries: 10  
+  
+  
+  
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - './docker/rabbitmq/data/:/var/lib/rabbitmq/'
+        - './docker/rabbitmq/log/:/var/log/rabbitmq'
+    networks:
+      rede-erp-services:
+        ipv4_address: 10.10.0.30
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 30s
+      retries: 3    
+      
+      
+      
+  erpservices.cashflow.api:
+    container_name: erpservices.cashflow.api
+    image: ${DOCKER_REGISTRY-}erpservicescashflowapi
+    build:
+      context: .
+      dockerfile: ERPServices.CashFlow.API\Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5100:80"      
+    networks:
+      rede-erp-services:
+        ipv4_address: 10.10.0.100
+    depends_on:
+      mysql-cashflow:
+        condition: service_healthy 
+      mysql-report:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+        
+        
+        
+  erpservices.processcashflow.api:
+    container_name: erpservices.processcashflow.api
+    image: ${DOCKER_REGISTRY-}erpservicesprocesscashflowapi
+    build:
+      context: .
+      dockerfile: ERPServices.ProcessCashFlow.API\Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5200:80"      
+    networks:
+      rede-erp-services:
+        ipv4_address: 10.10.0.101
+    depends_on:
+      mysql-cashflow:
+        condition: service_healthy
+      mysql-report:
+        condition: service_healthy 
+      rabbitmq:
+        condition: service_healthy        
+        
+        
+        
+  erpservices.report.api:
+    container_name: erpservices.report.api
+    image: ${DOCKER_REGISTRY-}erpservicesreportapi
+    build:
+      context: .
+      dockerfile: ERPServices.Report.API\Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5300:80"      
+    networks:
+      rede-erp-services:
+        ipv4_address: 10.10.0.102
+    depends_on:
+      mysql-cashflow:
+        condition: service_healthy
+      mysql-report:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+        
+
+  erpservices.apigateway:
+    container_name: erpservices.apigateway
+    image: ${DOCKER_REGISTRY-}erpservicesapigateway
+    build:
+      context: .
+      dockerfile: ERPServices.APIGateway\Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5000:80"      
+    networks:
+      rede-erp-services:
+        ipv4_address: 10.10.0.103
+
+           
+networks:
+  rede-erp-services:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.10.0.0/16
+         gateway: 10.10.0.1
