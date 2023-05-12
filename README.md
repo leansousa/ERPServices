@@ -53,6 +53,7 @@ Nesta seção, são listadas todas as ferramentas e frameworks utilizados no des
 | Entity Framework | ORM | 7.0 |
 | Swashbuckle | Documentação | 7.5 |
 | AutoMapper | Mapeamento de objetos | 12.0 |
+| XUnit | Testes Unitários | 2.4.2 |
 | Ocelot | API Gateway | 19.0 |
 | Docker Windows | Implantação de Container | 20.10 |
 | Docker Compose | Implantação de Container | 2.10 |
@@ -66,6 +67,14 @@ Os dados de usuário para autorização e autenticação devem ser considerados 
 | admin@erpservices.com | admin | ADMIN | erpservices.cashflow.api
 | report@erpservices.com | report | REPORT | erpservices.report.api
 
+### Testes Unitários
+Embora não estivesse envolvido no escopo, foi realizada a implementação de Testes unitários para camada de repositório para os seguintes serviços:
+
+- erpservices.cashflow.api
+- erpservices.processcashflow.api
+- erpservices.report.api
+
+A implementação foi realizada através do XUnit
 
 # Implantação e Execução
 Para implantação e execução da aplicação, é necessário ter o ambiente Docker, bem como o Docker Compose instalado e configurado.
@@ -83,5 +92,3 @@ Uma vez executados os comandos com sucesso, será possivel acessar a aplicação
 | erpservices.report.api | http://localhost:5300/swagger | http://localhost:5000/gateway/reportcashflow |
 | erpservices.apigateway | http://localhost:5400/swagger | http://localhost:5000/gateway/auth |
 | erpservices.apigateway | http://localhost:5000 | http://localhost:5000 |
-
-
