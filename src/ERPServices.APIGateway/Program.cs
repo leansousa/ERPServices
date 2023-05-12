@@ -7,7 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
+var ASPNETCORE_ENVIRONMENT = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+builder.Configuration.AddJsonFile($"ocelot.{ASPNETCORE_ENVIRONMENT}.json", optional: false, reloadOnChange: true);
+
+
 builder.Services.AddOcelot(builder.Configuration);
 
 var app = builder.Build();

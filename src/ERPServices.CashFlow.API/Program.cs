@@ -43,8 +43,7 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "DevelopmentIDE")
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -66,3 +65,5 @@ using (var scope = app.Services.CreateScope())
 
 
 app.Run();
+
+

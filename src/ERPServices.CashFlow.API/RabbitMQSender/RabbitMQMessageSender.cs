@@ -11,16 +11,28 @@ namespace ERPServices.CashFlow.API.RabbitMQSender
         private readonly string _hostName;
         private readonly string _password;
         private readonly string _userName;
-        private IConnection _connection;
+        private readonly IConfiguration _configuration;
+        private IConnection? _connection;
+        private readonly string _exchange;
+        private readonly string _queueName;
 
-        public RabbitMQMessageSender()
+        private readonly string _exchangeRetry;
+        private readonly string _queueNameRetry;
+
+
+        public RabbitMQMessageSender(IConfiguration configuration)
         {
-            _hostName = "10.10.0.30";
-            _password = "guest";
-            _userName = "guest";
+            _configuration = configuration;
+            _hostName = _configuration.GetValue<string>("RabbitMQ:HostName") ?? "";
+            _password = _configuration.GetValue<string>("RabbitMQ:Password") ?? "";
+            _userName = _configuration.GetValue<string>("RabbitMQ:UserName") ?? "";
+            _exchange = _configuration.GetValue<string>("RabbitMQ:Exchange") ?? "";
+            _queueName = _configuration.GetValue<string>("RabbitMQ:QueueName") ?? "";
+            _exchangeRetry = $"{_exchange}_retry";
+            _queueNameRetry = $"{_queueName}_retry";
         }
 
-        public void SendMessage(BaseMessage message, string queueName)
+        public void SendMessage(BaseMessage message)
         {
             var factory = new ConnectionFactory
             {
@@ -32,9 +44,48 @@ namespace ERPServices.CashFlow.API.RabbitMQSender
             _connection = factory.CreateConnection();
 
             using var channel = _connection.CreateModel();
-            channel.QueueDeclare(queue: queueName, false, false, false, arguments: null);
+
+
+            channel.ExchangeDeclare(_exchange, ExchangeType.Direct, durable: true);
+
+            var _queueNameProps = new Dictionary<string, object>
+                    {
+                        {"x-dead-letter-exchange", _exchangeRetry},
+                        {"x-dead-letter-routing-key", _queueNameRetry}
+                    };
+
+
+            channel.QueueDeclare(_queueName, true, false, false, _queueNameProps);
+
+            channel.QueueBind(queue: _queueName,
+                              exchange: _exchange,
+                              routingKey: _queueName);
+
+
+            channel.ExchangeDeclare(_exchangeRetry, ExchangeType.Direct, durable: true);
+
+
+            var _queueNameRetrysProps = new Dictionary<string, object>
+                    {
+                        {"x-dead-letter-exchange", _exchange},
+                        {"x-dead-letter-routing-key", _queueName},
+                        {"x-message-ttl", 10000},
+                        {"x-redelivered-count", 2},
+                    };
+
+            channel.QueueDeclare(_queueNameRetry, true, false, false, _queueNameRetrysProps);
+
+            channel.QueueBind(queue: _queueNameRetry,
+                              exchange: _exchangeRetry,
+                              routingKey: _queueNameRetry);
+
+
             byte[] body = GetMessageAsByteArray(message);
-            channel.BasicPublish(exchange: "", routingKey: queueName, basicProperties: null, body: body);
+
+            var properties = channel.CreateBasicProperties();
+            properties.Persistent = true;
+
+            channel.BasicPublish(exchange: _exchange, routingKey: _queueName, basicProperties: properties, body: body);
         }
 
         private byte[] GetMessageAsByteArray(BaseMessage message)

@@ -49,7 +49,7 @@ namespace ERPServices.CashFlow.API.Controllers
                 Operation = "C"
             };
 
-            _rabbitMQMessageSender.SendMessage(message, "cashflowqueue");
+            _rabbitMQMessageSender.SendMessage(message);
 
             return Ok(result);
         }
@@ -74,7 +74,7 @@ namespace ERPServices.CashFlow.API.Controllers
                 ValueOld = item.Value
             };
 
-            _rabbitMQMessageSender.SendMessage(message, "cashflowqueue");
+            _rabbitMQMessageSender.SendMessage(message);
 
             var result = await _repository.Update(vo);
 
@@ -100,7 +100,7 @@ namespace ERPServices.CashFlow.API.Controllers
                 ValueOld = item.Value
             };
 
-            _rabbitMQMessageSender.SendMessage(message, "cashflowqueue");
+            _rabbitMQMessageSender.SendMessage(message);
 
 
             var status = await _repository.Delete(id);
