@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{9E11
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPServices.APIGateway", "ERPServices.APIGateway\ERPServices.APIGateway.csproj", "{1C2C41BF-41D2-495D-A890-295FDD5579D6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERPServices.Identity", "ERPServices.Identity\ERPServices.Identity.csproj", "{6FFE73F4-12D7-4D5E-A37E-60BE8038DEF5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{1C2C41BF-41D2-495D-A890-295FDD5579D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C2C41BF-41D2-495D-A890-295FDD5579D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C2C41BF-41D2-495D-A890-295FDD5579D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FFE73F4-12D7-4D5E-A37E-60BE8038DEF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FFE73F4-12D7-4D5E-A37E-60BE8038DEF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FFE73F4-12D7-4D5E-A37E-60BE8038DEF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FFE73F4-12D7-4D5E-A37E-60BE8038DEF5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{1F81EA54-2FA9-41BA-8F74-92F6E279B286} = {5D8E20B8-707B-48A5-9BBB-452B3414EA59}
 		{26BA68D3-C08B-4A38-8397-02140F8D60C7} = {998F5693-5CF9-472C-A6FA-943E7E3D877A}
 		{1C2C41BF-41D2-495D-A890-295FDD5579D6} = {9E11AB6F-4CEF-4D2C-B2B7-25524FA5E2C5}
+		{6FFE73F4-12D7-4D5E-A37E-60BE8038DEF5} = {998F5693-5CF9-472C-A6FA-943E7E3D877A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {39E7ED8A-D4DC-47F4-B7A4-7200EAAD6752}

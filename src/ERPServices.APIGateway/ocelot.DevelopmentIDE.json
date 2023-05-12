@@ -69,7 +69,7 @@
     },
 
 
-   
+
 
     {
       "UpstreamPathTemplate": "/gateway/reportcashflow",
@@ -93,6 +93,20 @@
         {
           "Host": "localhost",
           "Port": 5300
+        }
+      ]
+    },
+
+
+    {
+      "UpstreamPathTemplate": "/gateway/auth",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/v1/Auth",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5400
         }
       ]
     }

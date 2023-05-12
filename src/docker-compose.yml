@@ -77,7 +77,19 @@ services:
       timeout: 30s
       retries: 3    
       
-      
+  erservices.identity:
+    container_name: erservices.identity
+    image: ${DOCKER_REGISTRY-}erservicesidentity
+    build:
+      context: .
+      dockerfile: ERPServices.Identity\Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5400:80"      
+    networks:
+      rede-erp-services:
+        ipv4_address: 10.10.0.104
       
   erpservices.cashflow.api:
     container_name: erpservices.cashflow.api

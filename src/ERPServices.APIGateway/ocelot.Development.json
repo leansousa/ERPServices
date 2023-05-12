@@ -69,7 +69,7 @@
     },
 
 
-   
+
 
     {
       "UpstreamPathTemplate": "/gateway/reportcashflow",
@@ -92,6 +92,21 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "10.10.0.102",
+          "Port": 80
+        }
+      ]
+    },
+
+
+
+    {
+      "UpstreamPathTemplate": "/gateway/auth",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/v1/Auth",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.10.0.104",
           "Port": 80
         }
       ]

@@ -1,11 +1,13 @@
 ﻿using ERPServices.ReportCashFlow.API.Data.ValueObjects;
 using ERPServices.ReportCashFlow.API.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPServices.CashFlow.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize(Roles = "ADMIN,REPORT")]
     public class ReportCashFlowController : ControllerBase
     {
         private readonly ICashFlowDailyReportRepository _repository;

@@ -2,12 +2,14 @@
 using ERPServices.CashFlow.API.RabbitMQSender;
 using ERPServices.CashFlow.API.Repository;
 using ERPServices.MessageBus;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPServices.CashFlow.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize(Roles ="ADMIN")]
     public class CashFlowController : ControllerBase
     {
         private readonly ICashFlowRepository _repository;
