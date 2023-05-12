@@ -31,24 +31,9 @@ namespace ERPServices.ReportCashFlow.API.Repository
 
         public async Task<CashFlowDailyReportVO> FindByDate(DateTime date)
         {
-            CashFlowDailyReportEntity cashFlow = await _context.CashFlows.Where(x => x.Date == date).FirstOrDefaultAsync() ?? new CashFlowDailyReportEntity();
+            CashFlowDailyReportEntity cashFlow = await _context.CashFlows.Where(x => x.Date.Date == date.Date).FirstOrDefaultAsync() ?? new CashFlowDailyReportEntity();
             return _mapper.Map<CashFlowDailyReportVO>(cashFlow);
         }
 
-        public async Task<CashFlowDailyReportVO> Create(CashFlowDailyReportVO vo)
-        {
-            CashFlowDailyReportEntity cashFlow = _mapper.Map<CashFlowDailyReportEntity>(vo);
-            _context.CashFlows.Add(cashFlow);
-            await _context.SaveChangesAsync();
-            return _mapper.Map<CashFlowDailyReportVO>(cashFlow);
-        }
-
-        public async Task<CashFlowDailyReportVO> Update(CashFlowDailyReportVO vo)
-        {
-            CashFlowDailyReportEntity cashFlow = _mapper.Map<CashFlowDailyReportEntity>(vo);
-            _context.CashFlows.Update(cashFlow);
-            await _context.SaveChangesAsync();
-            return _mapper.Map<CashFlowDailyReportVO>(cashFlow);
-        }
     }
 }

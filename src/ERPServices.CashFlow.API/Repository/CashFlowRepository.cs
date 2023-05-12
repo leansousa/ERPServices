@@ -10,7 +10,7 @@ namespace ERPServices.CashFlow.API.Repository
     public class CashFlowRepository : ICashFlowRepository
     {
         private readonly MySQLContext _context;
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
 
         public CashFlowRepository(MySQLContext context, IMapper mapper)
         {
