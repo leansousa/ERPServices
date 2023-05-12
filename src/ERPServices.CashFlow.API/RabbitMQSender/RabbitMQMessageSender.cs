@@ -69,8 +69,7 @@ namespace ERPServices.CashFlow.API.RabbitMQSender
                     {
                         {"x-dead-letter-exchange", _exchange},
                         {"x-dead-letter-routing-key", _queueName},
-                        {"x-message-ttl", 10000},
-                        {"x-redelivered-count", 2},
+                        {"x-message-ttl", 600000}
                     };
 
             channel.QueueDeclare(_queueNameRetry, true, false, false, _queueNameRetrysProps);
